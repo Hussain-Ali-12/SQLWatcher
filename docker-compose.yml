@@ -1,0 +1,260 @@
+services:
+  # ---------------------------------------------------------------------------
+  # Optional local control DB. Not used by default because local verification uses Neon.
+  # Start only when needed with: docker compose --profile local-db up -d
+  # ---------------------------------------------------------------------------
+  sqlwatcher-db:
+    profiles: ["local-db"]
+    image: postgres:16
+    container_name: sqlwatcher-control-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${LOCAL_SQLWATCHER_POSTGRES_DB}
+      POSTGRES_USER: ${LOCAL_SQLWATCHER_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${LOCAL_SQLWATCHER_POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - sqlwatcher_control_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${LOCAL_SQLWATCHER_POSTGRES_USER} -d ${LOCAL_SQLWATCHER_POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # Optional local protected target DB. Not used by default because target DB is Neon.
+  # ---------------------------------------------------------------------------
+  target-db:
+    profiles: ["local-db"]
+    image: postgres:16
+    container_name: sqlwatcher-target-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${LOCAL_TARGET_POSTGRES_DB}
+      POSTGRES_USER: ${LOCAL_TARGET_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${LOCAL_TARGET_POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./database/secureshop_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - target_app_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${LOCAL_TARGET_POSTGRES_USER} -d ${LOCAL_TARGET_POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  # ---------------------------------------------------------------------------
+  # SQLWatcher API backend.
+  # Uses sqlwatcher role/database for SQLWatcher control tables/migrations.
+  # Uses the secureshop role for protected target-query execution.
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: sqlwatcher-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      SQLWATCHER_DATABASE_URL: postgresql://${SQLWATCHER_DB_USER}:${SQLWATCHER_DB_PASSWORD}@${NEON_HOST}:${NEON_PORT}/${SQLWATCHER_DB_NAME}?sslmode=${NEON_SSLMODE}
+      APP_DATABASE_URL: postgresql://${SQLWATCHER_DB_USER}:${SQLWATCHER_DB_PASSWORD}@${NEON_HOST}:${NEON_PORT}/${SQLWATCHER_DB_NAME}?sslmode=${NEON_SSLMODE}
+      TARGET_DATABASE_URL: postgresql://${SECURESHOP_DB_USER}:${SECURESHOP_DB_PASSWORD}@${NEON_HOST}:${NEON_PORT}/${SECURESHOP_DB_NAME}?sslmode=${NEON_SSLMODE}
+      SQLWATCHER_PROXY_TOKEN: ${SQLWATCHER_PROXY_TOKEN}
+      FRONTEND_ORIGINS: ${FRONTEND_ORIGINS}
+      SESSION_TTL_HOURS: ${SESSION_TTL_HOURS}
+      REALTIME_SYNC_MIN_INTERVAL_SECONDS: ${REALTIME_SYNC_MIN_INTERVAL_SECONDS}
+      REALTIME_SYNC_BATCH_SIZE: ${REALTIME_SYNC_BATCH_SIZE}
+      LOG_FORMAT: ${LOG_FORMAT}
+      ENVIRONMENT: ${ENVIRONMENT}
+      PROXY_TARGET_HOST: ${NEON_HOST}
+      PROXY_TARGET_PORT: ${NEON_PORT}
+      PROXY_TARGET_SSL_MODE: ${PROXY_TARGET_SSL_MODE}
+      PROXY_LISTEN_HOST: ${PROXY_LISTEN_HOST}
+      PROXY_LISTEN_PORT: ${PROXY_LISTEN_PORT}
+      PROXY_FAST_LOCAL_DETECTION: ${PROXY_FAST_LOCAL_DETECTION}
+      PROXY_BACKGROUND_RECORDING: ${PROXY_BACKGROUND_RECORDING}
+    ports:
+      - "${BACKEND_PORT}:8000"
+    volumes:
+      - ./backend/app:/app/app
+      - ./shared:/app/shared:ro
+      - ./database:/database:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health/live', timeout=2).read()"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 20s
+
+  # ---------------------------------------------------------------------------
+  # SQLWatcher PostgreSQL wire proxy.
+  # SecureShop connects here. The proxy forwards to Neon over TLS.
+  # ---------------------------------------------------------------------------
+  sqlwatcher-proxy:
+    build:
+      context: .
+      dockerfile: proxy/Dockerfile
+    container_name: sqlwatcher-proxy
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      PROXY_LISTEN_HOST: ${PROXY_LISTEN_HOST}
+      PROXY_LISTEN_PORT: ${PROXY_LISTEN_PORT}
+      PROXY_TARGET_HOST: ${NEON_HOST}
+      PROXY_TARGET_PORT: ${NEON_PORT}
+      PROXY_TARGET_SSL_MODE: ${PROXY_TARGET_SSL_MODE}
+      PROXY_FAIL_MODE: ${PROXY_FAIL_MODE}
+      PROXY_FAST_LOCAL_DETECTION: ${PROXY_FAST_LOCAL_DETECTION}
+      PROXY_BACKGROUND_RECORDING: ${PROXY_BACKGROUND_RECORDING}
+      PROXY_RECORD_SEMAPHORE: ${PROXY_RECORD_SEMAPHORE}
+      PROXY_RULE_SYNC_INTERVAL_SECONDS: ${PROXY_RULE_SYNC_INTERVAL_SECONDS}
+      SQLWATCHER_BACKEND_URL: ${SQLWATCHER_BACKEND_URL}
+      SQLWATCHER_PROXY_TOKEN: ${SQLWATCHER_PROXY_TOKEN}
+    ports:
+      - "${PROXY_LISTEN_PORT}:15432"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # Optional test DB and backend test runner.
+  # Start with: docker compose --profile test up --build backend-tests
+  # ---------------------------------------------------------------------------
+  sqlwatcher-test-db:
+    image: postgres:16
+    container_name: sqlwatcher-test-db
+    profiles: ["test"]
+    restart: "no"
+    environment:
+      POSTGRES_DB: ${TEST_POSTGRES_DB}
+      POSTGRES_USER: ${TEST_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - sqlwatcher_test_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TEST_POSTGRES_USER} -d ${TEST_POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  backend-tests:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: sqlwatcher-backend-tests
+    profiles: ["test"]
+    restart: "no"
+    env_file:
+      - .env
+    environment:
+      SQLWATCHER_DATABASE_URL: ${TEST_SQLWATCHER_DATABASE_URL}
+      TARGET_DATABASE_URL: ${TEST_TARGET_DATABASE_URL}
+      TEST_DATABASE_URL: ${TEST_DATABASE_URL}
+      SQLWATCHER_PROXY_TOKEN: ${TEST_SQLWATCHER_PROXY_TOKEN}
+      LOG_FORMAT: console
+      ENVIRONMENT: development
+    command: ["pytest", "tests/", "-v"]
+    volumes:
+      - ./backend/tests:/app/tests:ro
+    depends_on:
+      sqlwatcher-test-db:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  # Demo migration/benchmark container used to initialise SecureShop schema/data.
+  # Uses the secureshop role for SecureShop schema creation and seed data.
+  # ---------------------------------------------------------------------------
+  client-app:
+    build: ./client_app
+    container_name: sqlwatcher-demo-client
+    restart: "no"
+    env_file:
+      - .env
+    environment:
+      CLOUD_DATABASE_URL: postgresql://${SECURESHOP_DB_USER}:${SECURESHOP_DB_PASSWORD}@${NEON_HOST}:${NEON_PORT}/${SECURESHOP_DB_NAME}?sslmode=${NEON_SSLMODE}
+      TARGET_DB_URL: postgresql://${SECURESHOP_DB_USER}:${SECURESHOP_DB_PASSWORD}@${NEON_HOST}:${NEON_PORT}/${SECURESHOP_DB_NAME}?sslmode=${NEON_SSLMODE}
+      SECURESHOP_DATABASE_URL: postgresql://${SECURESHOP_DB_USER}:${SECURESHOP_DB_PASSWORD}@${NEON_HOST}:${NEON_PORT}/${SECURESHOP_DB_NAME}?sslmode=${NEON_SSLMODE}
+    volumes:
+      - ./client_app:/client_app
+      - ./database:/client_app/database:ro
+    working_dir: /client_app
+    command: ["tail", "-f", "/dev/null"]
+    depends_on:
+      sqlwatcher-proxy:
+        condition: service_started
+
+  # ---------------------------------------------------------------------------
+  # SecureShop API. Direct mode uses the secureshop role against Neon.
+  # Proxy mode uses the secureshop role through SQLWatcher proxy.
+  # ---------------------------------------------------------------------------
+  secureshop-api:
+    build: ./secureshop/backend
+    container_name: secureshop-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DIRECT_DATABASE_URL: postgresql://${SECURESHOP_DB_USER}:${SECURESHOP_DB_PASSWORD}@${NEON_HOST}:${NEON_PORT}/${SECURESHOP_DB_NAME}?sslmode=${NEON_SSLMODE}
+      SQLWATCHER_PROXY_DATABASE_URL: postgresql://${SECURESHOP_DB_USER}:${SECURESHOP_DB_PASSWORD}@sqlwatcher-proxy:15432/${SECURESHOP_DB_NAME}?sslmode=disable&channel_binding=disable
+      DEFAULT_CONNECTION_MODE: ${DEFAULT_CONNECTION_MODE}
+      CORS_ORIGINS: ${CORS_ORIGINS}
+      SQLWATCHER_API_BASE: ${SQLWATCHER_API_BASE}
+      SQLWATCHER_USERNAME: ${SQLWATCHER_USERNAME}
+      SQLWATCHER_PASSWORD: ${SQLWATCHER_PASSWORD}
+    ports:
+      - "${SECURESHOP_API_PORT}:9000"
+    depends_on:
+      sqlwatcher-proxy:
+        condition: service_started
+
+  # ---------------------------------------------------------------------------
+  # SecureShop frontend. Runtime API URL is injected from .env.
+  # ---------------------------------------------------------------------------
+  secureshop-frontend:
+    build: ./secureshop/frontend
+    container_name: secureshop-frontend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      SECURESHOP_API_BASE_URL: ${SECURESHOP_API_BASE_URL}
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+    ports:
+      - "${SECURESHOP_FRONTEND_PORT}:80"
+    depends_on:
+      - secureshop-api
+
+  # ---------------------------------------------------------------------------
+  # SQLWatcher analyst dashboard frontend.
+  # ---------------------------------------------------------------------------
+  frontend:
+    build: ./frontend
+    container_name: sqlwatcher-frontend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      VITE_API_BASE: ${VITE_API_BASE}
+      VITE_WS_BASE: ${VITE_WS_BASE}
+    ports:
+      - "${FRONTEND_PORT}:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+volumes:
+  sqlwatcher_control_data:
+  target_app_data:
+  sqlwatcher_test_data:

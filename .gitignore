@@ -1,0 +1,42 @@
+# Secrets and local environments
+.env
+*.env
+.env.*
+!.env.example
+prod.env
+
+# Python caches
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node/build artifacts
+node_modules/
+dist/
+build/
+.vite/
+coverage/
+
+# Local development artefacts
+scripts/
+demo_reports/
+frontend/STYLE_CSS_AUDIT.md
+*_Analysis.md
+
+# Legacy generated frontend fallback
+secureshop/frontend/static/
+
+# Runtime/log output
+*.log
+*.tmp
+
+# OS/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

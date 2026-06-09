@@ -1,0 +1,127 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+
+.compact {
+  border-color: transparent;
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--bg-raised) 82%, transparent);
+}
+
+.compact .copyButton {
+  display: none;
+}
+
+.compact .code {
+  min-height: 30px;
+  padding: 7px 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  font-size: var(--font-size-xs);
+  line-height: 1.35;
+}
+
+.compact:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  background: color-mix(in srgb, var(--accent) 7%, var(--bg-raised));
+}
+
+.wrapper:hover .copyButton,
+.wrapper:focus-within .copyButton {
+  opacity: 1;
+}
+
+.copyButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 1;
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-panel);
+  color: var(--text-dim);
+  opacity: 0;
+  transition: opacity var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.copyButton:hover,
+.copyButton:focus-visible {
+  border-color: var(--accent);
+  color: var(--text-bright);
+  outline: none;
+  opacity: 1;
+}
+
+.code {
+  display: block;
+  min-width: 0;
+  padding: 14px 46px 14px 14px;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+.keyword {
+  color: var(--accent2);
+}
+
+.danger {
+  color: var(--sev-critical);
+  font-weight: 600;
+}
+
+.string {
+  color: var(--ok);
+}
+
+.number {
+  color: var(--sev-medium);
+}
+
+.comment {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.operator {
+  color: var(--sev-low);
+}
+
+.identifier {
+  color: var(--text);
+}
+
+.toggleButton {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg-panel);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  text-align: left;
+}
+
+.toggleButton:hover,
+.toggleButton:focus-visible {
+  color: var(--text-bright);
+  outline: none;
+}

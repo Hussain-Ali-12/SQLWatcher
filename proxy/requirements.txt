@@ -1,0 +1,4 @@
+# Optional local development install for running the proxy from proxy/.
+# Docker copies the project-level shared package directly into /app/shared.
+-e ../shared
+sqlglot==26.3.9

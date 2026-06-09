@@ -1,0 +1,123 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: var(--panel-padding, 16px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-panel);
+  color: var(--text);
+  box-shadow: var(--shadow-panel);
+  transition: transform var(--transition), border-color var(--transition), background var(--transition);
+  text-align: left;
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-bright);
+  background: var(--bg-raised);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.label {
+  font-family: var(--font-sans);
+  color: var(--text-dim);
+  font-size: var(--font-size-sm);
+  line-height: 1.3;
+}
+
+.icon {
+  display: inline-flex;
+  color: var(--text-dim);
+}
+
+.value {
+  animation: metricValuePulse 300ms ease;
+  font-family: var(--font-mono);
+  color: var(--text-bright);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  line-height: 1;
+}
+
+.deltaPositive {
+  color: var(--ok);
+}
+
+.deltaNegative {
+  color: var(--sev-critical);
+}
+
+.deltaNeutral {
+  color: var(--text-dim);
+}
+
+.neutral {
+  border-left: 3px solid var(--border-bright);
+}
+
+.ok {
+  border-left: 3px solid var(--ok);
+}
+
+.warn {
+  border-left: 3px solid var(--sev-medium);
+}
+
+.critical {
+  border-left: 3px solid var(--sev-critical);
+}
+
+@keyframes metricValuePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+/* Production metric cards */
+.card {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(25, 38, 64, 0.98), rgba(14, 24, 42, 0.96));
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 92% 10%, rgba(79, 140, 255, 0.14), transparent 28%);
+}
+
+.value {
+  font-size: clamp(28px, 2.5vw, 38px);
+  font-weight: 800;
+}

@@ -1,0 +1,10 @@
+.editorShell {
+  overflow: hidden;
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-lg);
+  background: var(--bg-raised);
+}
+
+.disabled {
+  opacity: 0.65;
+}

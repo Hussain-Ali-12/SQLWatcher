@@ -1,0 +1,87 @@
+.layer {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.backdrop {
+  flex: 1;
+  border: 0;
+  background: color-mix(in srgb, var(--bg-base) 78%, transparent);
+}
+
+.drawer {
+  width: min(var(--drawer-width, 480px), 100vw);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--border-bright);
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-panel);
+  animation: slideIn 200ms ease;
+  outline: none;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-raised);
+}
+
+.titleBlock {
+  min-width: 0;
+}
+
+.title {
+  color: var(--text-bright);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xl);
+  line-height: 1.25;
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: var(--text-dim);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+}
+
+.closeButton {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-panel);
+  color: var(--text-dim);
+}
+
+.closeButton:hover,
+.closeButton:focus-visible {
+  border-color: var(--accent);
+  color: var(--text-bright);
+  outline: none;
+}
+
+.body {
+  flex: 1;
+  min-height: 0;
+  padding: 18px;
+  overflow: auto;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

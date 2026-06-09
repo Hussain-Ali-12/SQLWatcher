@@ -1,0 +1,40 @@
+# Generated caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local environments and secrets
+scripts/
+demo_reports/
+__pycache__/
+*.pyc
+.env
+*.env
+.env.*
+
+# Node/build artifacts
+node_modules/
+dist/
+build/
+.vite/
+coverage/
+
+# Demo/runtime output
+demo_reports/
+*.log
+*.tmp
+
+# OS/IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+# Production cleanup exclusions
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+frontend/STYLE_CSS_AUDIT.md
+*_Analysis.md
+secureshop/frontend/static/

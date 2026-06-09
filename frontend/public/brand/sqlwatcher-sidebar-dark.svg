@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="180" viewBox="0 0 720 180" role="img" aria-label="SQLWatcher dark sidebar logo">
+  <title>SQLWatcher Dark Sidebar Logo</title>
+  <defs>
+    <linearGradient id="dbGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#00D5FF"/>
+      <stop offset="1" stop-color="#00B8E6"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(18,30) scale(.52)">
+    <path d="M42 58 C42 31 238 31 238 58 L238 194 C238 223 42 223 42 194 Z" fill="url(#dbGrad)"/>
+    <ellipse cx="140" cy="58" rx="98" ry="27" fill="#7FEAFF"/>
+    <path d="M42 102 C68 126 212 126 238 102" fill="none" stroke="#061A35" stroke-width="12" stroke-linecap="round"/>
+    <path d="M42 156 C68 181 212 181 238 156" fill="none" stroke="#061A35" stroke-width="12" stroke-linecap="round"/>
+    <path d="M70 130 C102 96 178 96 210 130 C178 164 102 164 70 130 Z" fill="#061A35"/>
+    <path d="M83 130 C110 105 170 105 197 130 C170 155 110 155 83 130 Z" fill="white"/>
+    <circle cx="140" cy="130" r="32" fill="#00B8E6"/>
+    <circle cx="140" cy="130" r="16" fill="#061A35"/>
+    <circle cx="128" cy="119" r="6" fill="white" opacity="0.95"/>
+  </g>
+  <text x="176" y="108" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="74" font-weight="850" letter-spacing="-2">
+    <tspan fill="#00D5FF">SQL</tspan><tspan fill="#FFFFFF">Watcher</tspan>
+  </text>
+  <text x="181" y="145" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="4" fill="#B8DFF0">DATABASE FIREWALL</text>
+</svg>

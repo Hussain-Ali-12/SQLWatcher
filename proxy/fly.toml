@@ -1,0 +1,39 @@
+app            = "sqlwatcher-proxy"
+primary_region = "iad"
+
+# Build from the project root so the Docker context includes shared/.
+# Run: fly deploy --config proxy/fly.toml from the project root.
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PROXY_LISTEN_HOST                = "0.0.0.0"
+  PROXY_LISTEN_PORT                = "15432"
+  PROXY_TARGET_PORT                = "5432"
+  PROXY_TARGET_SSL_MODE            = "require"
+  PROXY_FAIL_MODE                  = "open"
+  PROXY_FAST_LOCAL_DETECTION       = "true"
+  PROXY_BACKGROUND_RECORDING       = "true"
+  PROXY_RECORD_SEMAPHORE           = "25"
+  PROXY_RECORD_MAX_PENDING         = "10000"
+  PROXY_DROP_LOW_RISK_ALLOWS_WHEN_FULL = "false"
+  PROXY_RULE_SYNC_INTERVAL_SECONDS = "60"
+  PROXY_RULE_SYNC_HTTP_TIMEOUT_SECONDS = "5"
+  PROXY_RECORD_HTTP_TIMEOUT_SECONDS    = "8"
+  PROXY_HTTP_TIMEOUT_SECONDS       = "12"
+  PROXY_RECORD_RETRY_COUNT         = "3"
+
+# Secrets (set via CLI, never here):
+#   fly secrets set PROXY_TARGET_HOST="..." SQLWATCHER_BACKEND_URL="..." SQLWATCHER_PROXY_TOKEN="..."
+
+[[services]]
+  internal_port = 15432
+  protocol      = "tcp"
+
+  [[services.ports]]
+    port = 15432
+
+[[vm]]
+  memory   = "1gb"
+  cpu_kind = "shared"
+  cpus     = 1

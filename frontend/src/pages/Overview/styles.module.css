@@ -1,0 +1,382 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  color: var(--text);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header h1 {
+  margin: 0;
+  color: var(--text-bright);
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.headerMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--text-dim);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+}
+
+.headerMeta strong {
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.errorBanner {
+  padding: 10px 12px;
+  border: 1px solid var(--sev-medium);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--sev-medium) 10%, var(--bg-panel));
+  color: var(--text-bright);
+  font-size: var(--font-size-md);
+}
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.healthStrip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.healthItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--text-dim);
+}
+
+.healthItem svg {
+  flex: 0 0 auto;
+}
+
+.loading {
+  width: fit-content;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+}
+
+.chartGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.panel {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-panel);
+  overflow: hidden;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panelHeader h2 {
+  margin: 0;
+  color: var(--text-bright);
+  font-size: var(--font-size-lg);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+
+.panelHeader span {
+  color: var(--text-dim);
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  text-align: right;
+}
+
+.chartFrame {
+  width: 100%;
+  min-height: 280px;
+  padding: 10px 12px 14px;
+}
+
+.chartTooltip {
+  min-width: 140px;
+  padding: 9px 10px;
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-panel);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+}
+
+.tooltipLabel {
+  margin: 0 0 8px;
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+}
+
+.tooltipRow {
+  display: grid;
+  grid-template-columns: 8px 1fr auto;
+  align-items: center;
+  gap: 7px;
+  padding: 2px 0;
+}
+
+.tooltipRow strong {
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.tooltipSwatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.emptyFeed {
+  padding: 20px 16px;
+  color: var(--text-dim);
+  font-size: var(--font-size-md);
+}
+
+.feedList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+}
+
+.feedItem {
+  border-bottom: 1px solid var(--border);
+}
+
+.feedItem:last-child {
+  border-bottom: 0;
+}
+
+.feedButton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.feedButton:hover {
+  background: var(--bg-raised);
+}
+
+.feedButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.feedMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.feedMeta time {
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+}
+
+.feedSql {
+  display: block;
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feedFlash {
+  animation: feedFlash 1000ms ease-out;
+}
+
+@keyframes feedFlash {
+  0% {
+    background: color-mix(in srgb, var(--sev-medium) 26%, transparent);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+@media (max-width: 1200px) {
+  .kpiGrid,
+  .healthStrip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .headerMeta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .chartGrid,
+  .kpiGrid,
+  .healthStrip {
+    grid-template-columns: 1fr;
+  }
+
+  .panelHeader {
+    flex-direction: column;
+  }
+
+  .panelHeader span {
+    text-align: left;
+  }
+}
+
+.headerActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.refreshButton {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 0 11px;
+  text-transform: uppercase;
+  transition: background var(--transition), border-color var(--transition), color var(--transition), opacity var(--transition);
+}
+
+.refreshButton:hover,
+.refreshButton:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent2);
+}
+
+.refreshButton:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.spinning {
+  animation: overview-refresh-spin 0.8s linear infinite;
+}
+
+@keyframes overview-refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .headerActions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .refreshButton {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* Production dashboard polish */
+.header {
+  padding: 8px 2px 2px;
+}
+
+.header h1 {
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 800;
+}
+
+.header h1::after {
+  content: "Live SQL security telemetry, proxy health, and query risk at a glance";
+  display: block;
+  margin-top: 8px;
+  color: var(--text-dim);
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.healthItem,
+.panel,
+.headerMeta,
+.refreshButton {
+  backdrop-filter: blur(14px);
+}
+
+.panel {
+  background: linear-gradient(180deg, var(--bg-panel-strong), rgba(13, 22, 37, 0.92));
+}
+
+.chartFrame {
+  min-height: 320px;
+}

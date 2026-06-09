@@ -1,0 +1,161 @@
+.shell {
+  min-height: 100vh;
+  display: flex;
+  background: var(--bg-base);
+  color: var(--text);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  --page-padding: 20px;
+  --row-height: 44px;
+  --panel-padding: 16px;
+  --control-height: 34px;
+  --density-gap: 14px;
+  --section-gap: 20px;
+  --nav-item-height: 38px;
+  --footer-button-height: 34px;
+}
+
+.mainColumn {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-base);
+}
+
+.pageArea {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: var(--page-padding, 20px);
+  animation: pageEnter 200ms ease;
+}
+
+.density-comfortable {
+  --page-padding: 34px;
+  --row-height: 60px;
+  --panel-padding: 26px;
+  --control-height: 46px;
+  --density-gap: 22px;
+  --section-gap: 30px;
+  --nav-item-height: 44px;
+  --footer-button-height: 40px;
+}
+
+.density-standard {
+  --page-padding: 20px;
+  --row-height: 44px;
+  --panel-padding: 16px;
+  --control-height: 34px;
+  --density-gap: 14px;
+  --section-gap: 20px;
+  --nav-item-height: 38px;
+  --footer-button-height: 34px;
+}
+
+.density-compact {
+  --page-padding: 10px;
+  --row-height: 30px;
+  --panel-padding: 10px;
+  --control-height: 28px;
+  --density-gap: 8px;
+  --section-gap: 12px;
+  --nav-item-height: 30px;
+  --footer-button-height: 28px;
+}
+
+.density-comfortable .pageArea {
+  line-height: 1.55;
+}
+
+.density-compact .pageArea {
+  line-height: 1.22;
+}
+
+.density-comfortable .pageArea :global(.recharts-wrapper) {
+  margin-top: 8px;
+}
+
+.density-compact .pageArea :global(input),
+.density-compact .pageArea :global(select),
+.density-compact .pageArea :global(textarea),
+.density-compact .pageArea :global(button) {
+  min-height: var(--control-height);
+}
+
+.density-comfortable .pageArea :global(input),
+.density-comfortable .pageArea :global(select),
+.density-comfortable .pageArea :global(textarea),
+.density-comfortable .pageArea :global(button) {
+  min-height: var(--control-height);
+}
+
+.density-compact .pageArea :global([class*="header"]),
+.density-compact .pageArea :global([class*="Header"]) {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.density-comfortable .pageArea :global([class*="panel"]),
+.density-comfortable .pageArea :global([class*="card"]),
+.density-comfortable .pageArea :global([class*="Panel"]),
+.density-comfortable .pageArea :global([class*="Card"]) {
+  --density-local-padding: var(--panel-padding);
+}
+
+.density-compact .pageArea :global([class*="panel"]),
+.density-compact .pageArea :global([class*="card"]),
+.density-compact .pageArea :global([class*="Panel"]),
+.density-compact .pageArea :global([class*="Card"]) {
+  --density-local-padding: var(--panel-padding);
+}
+
+.collapsed {
+  --sidebar-current-width: 64px;
+}
+
+.font-small {
+  --font-size-xs: 9px;
+  --font-size-sm: 10px;
+  --font-size-md: 11px;
+  --font-size-lg: 13px;
+  --font-size-xl: 16px;
+}
+
+.font-default {
+  --font-size-xs: 10px;
+  --font-size-sm: 11px;
+  --font-size-md: 13px;
+  --font-size-lg: 15px;
+  --font-size-xl: 18px;
+}
+
+.font-large {
+  --font-size-xs: 12px;
+  --font-size-sm: 13px;
+  --font-size-md: 15px;
+  --font-size-lg: 17px;
+  --font-size-xl: 20px;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Production visual refresh */
+.mainColumn {
+  background:
+    linear-gradient(180deg, rgba(8, 13, 22, 0.88), rgba(8, 13, 22, 0.98)),
+    radial-gradient(circle at 96% 2%, rgba(79, 140, 255, 0.08), transparent 30%);
+}
+
+.pageArea {
+  padding: clamp(18px, 2.4vw, 34px);
+}

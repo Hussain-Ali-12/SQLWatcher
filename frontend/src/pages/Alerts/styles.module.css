@@ -1,0 +1,553 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  color: var(--text);
+}
+
+.pageHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.pageHeader h1 {
+  margin: 0;
+  color: var(--text-bright);
+  font-family: var(--font-sans);
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.pageHeader p {
+  max-width: 760px;
+  margin: 8px 0 0;
+  color: var(--text-dim);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  line-height: 1.45;
+}
+
+.refreshButton,
+.bulkToolbar button,
+.triageButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  line-height: 1;
+  transition: border-color var(--transition), color var(--transition), background var(--transition), transform var(--transition);
+}
+
+.refreshButton {
+  min-height: 32px;
+  padding: 0 11px;
+  white-space: nowrap;
+}
+
+.refreshButton:hover,
+.refreshButton:focus-visible,
+.bulkToolbar button:hover,
+.bulkToolbar button:focus-visible,
+.triageButton:hover,
+.triageButton:focus-visible {
+  border-color: var(--accent);
+  color: var(--text-bright);
+  outline: none;
+}
+
+.refreshButton:disabled,
+.bulkToolbar button:disabled,
+.triageButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.errorBanner {
+  padding: 10px 12px;
+  border: 1px solid var(--sev-medium);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--sev-medium) 10%, var(--bg-panel));
+  color: var(--text-bright);
+  font-size: var(--font-size-md);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 400px minmax(0, 1fr);
+  gap: 14px;
+  min-height: 640px;
+}
+
+.queuePanel,
+.detailPanel {
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--bg-panel);
+  box-shadow: var(--shadow-panel);
+}
+
+.queuePanel {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-raised);
+}
+
+.tabButton {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 11px 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: var(--text-dim);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-xs);
+  text-align: left;
+  transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.tabButton strong {
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-md);
+  font-weight: 650;
+}
+
+.tabButton:hover,
+.tabButton:focus-visible,
+.activeTab {
+  border-bottom-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  color: var(--text-bright);
+  outline: none;
+}
+
+.bulkToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--accent) 9%, var(--bg-raised));
+}
+
+.bulkToolbar span {
+  margin-right: auto;
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+.bulkToolbar button {
+  min-height: 28px;
+  padding: 0 9px;
+}
+
+.queueMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+}
+
+.queueMeta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.queueList {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  overflow: auto;
+}
+
+.emptyQueue,
+.emptyDetail {
+  display: grid;
+  min-height: 220px;
+  place-content: center;
+  gap: 8px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
+.emptyDetail h2 {
+  color: var(--text-bright);
+  font-size: var(--font-size-xl);
+}
+
+.emptyDetail p {
+  max-width: 360px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.alertCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 11px 12px 11px 13px;
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  cursor: pointer;
+  transition: border-color var(--transition), background var(--transition), transform var(--transition);
+}
+
+.alertCard:hover {
+  border-color: var(--border-bright);
+  background: color-mix(in srgb, var(--bg-panel) 72%, var(--bg-raised));
+  transform: translateY(-1px);
+}
+
+.selectedCard {
+  border-color: var(--border-bright);
+  border-left-color: var(--accent) !important;
+  background: color-mix(in srgb, var(--accent) 9%, var(--bg-raised));
+}
+
+.severityCritical {
+  border-left-color: var(--sev-critical);
+}
+
+.severityHigh {
+  border-left-color: var(--sev-high);
+}
+
+.severityMedium {
+  border-left-color: var(--sev-medium);
+}
+
+.severityLow {
+  border-left-color: var(--sev-low);
+}
+
+.severityNone {
+  border-left-color: var(--sev-none);
+}
+
+.cardTopRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 9px;
+}
+
+.checkBox {
+  width: 15px;
+  height: 15px;
+  margin-top: 2px;
+  accent-color: var(--accent);
+}
+
+.cardTitleBlock {
+  min-width: 0;
+}
+
+.cardTitleBlock h3 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--text-bright);
+  font-size: var(--font-size-md);
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardTitleBlock span {
+  display: block;
+  margin-top: 4px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+}
+
+.riskScore,
+.detailRisk {
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.riskScore {
+  min-width: 34px;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-panel);
+  font-size: var(--font-size-sm);
+  text-align: center;
+}
+
+.sqlPreview {
+  display: -webkit-box;
+  min-height: 34px;
+  margin: 0;
+  overflow: hidden;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.cardMetaRow,
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.inlineDetail {
+  min-width: 0;
+}
+
+.detailPanel {
+  display: flex;
+  min-height: 640px;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px;
+  overflow: hidden;
+}
+
+.detailHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+}
+
+.detailHeader h2 {
+  margin: 0;
+  color: var(--text-bright);
+  font-size: var(--font-size-xl);
+  line-height: 1.3;
+}
+
+.detailRisk {
+  display: inline-grid;
+  min-width: 48px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  font-size: 20px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.detailGrid div {
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+}
+
+.detailGrid span {
+  display: block;
+  color: var(--text-dim);
+  font-size: var(--font-size-xs);
+}
+
+.detailGrid strong {
+  display: block;
+  overflow: hidden;
+  margin-top: 5px;
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.detailSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detailSection h3,
+.sectionHeader h3 {
+  margin: 0;
+  color: var(--text-bright);
+  font-size: var(--font-size-md);
+  font-weight: 650;
+}
+
+.detailSection p {
+  margin: 0;
+  color: var(--text);
+  font-size: var(--font-size-md);
+  line-height: 1.55;
+}
+
+.triageBox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 2px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sectionHeader span {
+  color: var(--text-dim);
+  font-size: var(--font-size-xs);
+  text-align: right;
+}
+
+.triageGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.triageButton {
+  min-height: 42px;
+  padding: 0 10px;
+  background: var(--bg-raised);
+}
+
+.triageIcon {
+  display: inline-grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+}
+
+.spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--border-bright);
+  border-top-color: var(--accent);
+  border-radius: 999px;
+  animation: spin 700ms linear infinite;
+}
+
+.triageNotice {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--text-dim);
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 1180px) {
+  .layout {
+    grid-template-columns: 360px minmax(0, 1fr);
+  }
+
+  .detailGrid,
+  .triageGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .inlineDetail {
+    display: none;
+  }
+
+  .queuePanel {
+    min-height: 620px;
+  }
+
+  .pageHeader {
+    flex-direction: column;
+  }
+
+  .detailPanel {
+    min-height: auto;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detailGrid,
+  .triageGrid {
+    grid-template-columns: 1fr;
+  }
+}

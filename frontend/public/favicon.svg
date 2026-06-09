@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="SQLWatcher favicon">
+  <title>SQLWatcher Favicon</title>
+  <rect x="28" y="28" width="456" height="456" rx="92" fill="#001F5B"/>
+  <g transform="translate(86,124) scale(1.22)">
+      <!-- white database body for app icon -->
+      <path d="M42 58 C42 31 238 31 238 58 L238 194 C238 223 42 223 42 194 Z" fill="white"/>
+      <ellipse cx="140" cy="58" rx="98" ry="27" fill="white"/>
+      <path d="M42 102 C68 126 212 126 238 102" fill="none" stroke="#001F5B" stroke-width="12" stroke-linecap="round"/>
+      <path d="M42 156 C68 181 212 181 238 156" fill="none" stroke="#001F5B" stroke-width="12" stroke-linecap="round"/>
+      <path d="M70 130 C102 96 178 96 210 130 C178 164 102 164 70 130 Z" fill="#001F5B"/>
+      <path d="M83 130 C110 105 170 105 197 130 C170 155 110 155 83 130 Z" fill="white"/>
+      <circle cx="140" cy="130" r="32" fill="#00B8E6"/>
+      <circle cx="140" cy="130" r="16" fill="#001F5B"/>
+      <circle cx="128" cy="119" r="6" fill="white" opacity="0.95"/>
+  </g>
+</svg>
